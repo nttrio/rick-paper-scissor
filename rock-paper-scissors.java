@@ -1,67 +1,52 @@
-import java.util.*;
+import java.util.Scanner;
 
-public class Game 
-{
-    
-    public static final String ROCK = "ROCK";
-    public static final String PAPER = "PAPER";
-    public static final String SCISSORS = "SCISSORS";
-
-    public static void main(String args[]) 
-    {
-      System.out.println("Enter any one of the following inputs:  ");
-      System.out.println("ROCK");
-      System.out.println("PAPER");
-      System.out.println("SCISSORS");
-      System.out.println();
-          
-      String playerMove = getPlayerMove();
-      String computerMove = getComputerMove(); 
- 
-      //Rules of the Game Applied Below:
-      /*if both playerMove and computerMove
-        produces the same formation, then 
-        Game is a tie*/
-      if (playerMove.equals(computerMove))
-            System.out.println("Game is Tie !!");
-      // if playerMove is ROCK         
-      else if (playerMove.equals(Game.ROCK))
-        System.out.println(computerMove.equals(Game.PAPER) ? "Computer Wins": "Player wins");   
-      // if playerMove is PAPER
-      else if (playerMove.equals(Game.PAPER))
-        System.out.println(computerMove.equals(Game.SCISSORS) ? "Computer Wins": "Player wins");   
-      // if playerMove is SCISSORS    
-      else
-        System.out.println(computerMove.equals(Game.ROCK) ? "Computer Wins": "Player wins");   
-    }
-    
-    /* Get Computer's move using Random 
-       class nextInt() method */   
-    public static String getComputerMove()
-    {
-        String computermove;
-        Random random = new Random();
-        int input = random.nextInt(3)+1;
-        if (input == 1)
-            computermove = Game.ROCK;
-        else if(input == 2)
-            computermove = Game.PAPER;
-        else
-            computermove = Game.SCISSORS;
+public class RPS1 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] choices = {"rock", "paper", "scissors"};
+        int round = 1;
+        int playerScore = 0;
+        int computerScore = 0;
+        boolean continuePlaying = true;
+        
+        while (continuePlaying) {
+            System.out.println("Round " + round);
+            System.out.print("Enter your choice (rock, paper, scissors): ");
+            String playerChoice = scanner.nextLine();
+            int computerChoice = (int) (Math.random() * 3);
+            System.out.println("Computer chooses " + choices[computerChoice]);
             
-        System.out.println("Computer move is: " + computermove);
-        System.out.println();
-        return computermove;    
+            if (playerChoice.equals(choices[computerChoice])) {
+                System.out.println("Tie!");
+            } else if (playerChoice.equals("rock") && choices[computerChoice].equals("scissors") ||
+                    playerChoice.equals("paper") && choices[computerChoice].equals("rock") ||
+                    playerChoice.equals("scissors") && choices[computerChoice].equals("paper")) {
+                System.out.println("You win!");
+                playerScore++;
+            } else {
+                System.out.println("Computer wins!");
+                computerScore++;
+            }
+            
+            if (round == 3) {
+                System.out.println("Game over!");
+                System.out.println("Your score: " + playerScore);
+                System.out.println("Computer score: " + computerScore);
+                System.out.print("Do you want to play again? (y/n): ");
+                String answer = scanner.nextLine();
+                if (answer.equalsIgnoreCase("n")) {
+                    continuePlaying = false;
+                    System.out.print("Thank you for playing!");
+                } else {
+                    round = 0;
+                    playerScore = 0;
+                    computerScore = 0;
+                }
+            }
+            
+            round++;
+        }
+        
+        scanner.close();
     }
-    
-    /* Get Player's move using Scanner
-       class */
-    public static String getPlayerMove()
-    {
-        Scanner in = new Scanner(System.in);
-        String input = in.next();
-        String playermove = input.toUpperCase();
-        System.out.println("Player move is: "+ playermove);
-        return playermove;
-    }    
 }
